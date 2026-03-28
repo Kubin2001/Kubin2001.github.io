@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framework C++</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #2c2c2c;
+            color: antiquewhite;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 10vw;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            color: tomato;
+            margin-top: 60px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid tomato;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: tomato;
+            margin-top: 40px;
+            font-size: 22px;
+        }
+        h4 {
+            color: #ff9e8a;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            color: white;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 30px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Framework C++</h2>
+
+    <div style="text-align: center; margin-bottom: 30px; font-size: 18px;">
+        Kod źródłowy: 
+        <a class="Github" href="https://github.com/Kubin2001/OpenGlFrameWork" target="_blank" style="color: tomato; text-decoration: none; font-weight: bold; margin-left: 5px;">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+    </div>
+    <p>Jest to w uproszczeniu zestaw klas oraz miniprogramów, które razem tworzą bibliotekę C++</p>
+
+    <p><strong>Elementy biblioteki:</strong></p>
+    <ul>
+        <li>Wydajny Batch-Renderer 2D obsługujący kilkanaście funkcji renderowania</li>
+        <li>Klasa obsługująca interfejs użytkownika nastawiona na efektywność i konfigurowalność</li>
+        <li>Klasa zarządzająca teksturami pozwalająca na dynamiczne przeładowania w czasie trwania programu</li>
+        <li>Klasa zarządzająca dźwiękami, również obsługująca dynamiczne przeładowanie, dźwięki stereo oraz dźwięki odległościowe</li>
+        <li>Graficzny konfigurowalny eksplorator plików</li>
+        <li>Graficzny program do tworzenia ścieżek dla SI</li>
+        <li>Dynamiczne tworzenie czcionek z plików ttf oraz wczytywanie już wcześniej zdefiniowanych czcionek w tym opcjonalnie poprzez skanowanie tekstury bez gotowych wymiarów glifów</li>
+        <li>Klasa zarządzająca scenami (Tworzenie, przełączanie, resetowanie)</li>
+        <li>Biblioteka Geometryczna/AABB</li>
+        <li>Klasa ułatwiająca zarządzanie mapą podzieloną na chunki</li>
+        <li>Wiele pomniejszych funkcji pomocniczych, jak kamera, otrzymywanie koordynatów myszy itd.</li>
+    </ul>
+
+    <p>Poszczególne elementy są szczegółowo opisane poniżej.</p>
+
+    <h2>Architektura Renderera</h2>
+    <p>Silnik renderujący wykorzystujący technikę grupowania poleceń do karty graficznej w większe paczki.</p>
+    <p>W ogólności pozwala on na renderowanie w 3 trybach:</p>
+    <ul>
+        <li>Tryb płaski</li>
+        <li>Tryb standardowy</li>
+        <li>Tryb Unifikowany</li>
+    </ul>
+
+    <h3>Tryb Płaski</h3>
+    <p>Ten tryb renderuje tylko i wyłącznie teksturowane prostokąty wtkorzystuje on maksymalnie technikę batchowania</p>
+    
+    <h4>Zalety trybu płaskiego</h4>
+    <ul>
+        <li>Zdecydowanie najwyższa wydajność renderowania</li>
+    </ul>
+    
+    <h4>Wady trybu płaskiego</h4>
+    <ul>
+        <li>Wymóg operowania dodatkowymi funkcjami jak FlatSetUp i Present</li>
+        <li>Nie branie pod uwagę kolejności przesłanaiania</li>
+        <li>Ograniczenie tylko do jednej funkcji renderowania</li>
+        <li>Wymóg każdorazowago wywoływania funkcji SetUP przy dynamicznym wczytywaniu tekstur</li>
+    </ul>
+    
+    <h4>Użyteczność</h4>
+    <ul>
+        <li>Tile Mapy</li>
+        <li>Struktury gdzie przesłanianie jest nieistotne</li>
+    </ul>
+
+    <h3>Tryb Standardowy</h3>
+    <p>Typowy przypadek użycia renderera daje nieograniczony dostęp do wszystkich jego funkcji</p>
+    
+    <h4>Zalety trybu standardowego</h4>
+    <ul>
+        <li>Wysoka wydajność przy sporadycznym zmienianiu funkcji renderujących</li>
+        <li>Najwyższa wydajność przy rysowaniu nieteksturowych kwadratów</li>
+    </ul>
+    
+    <h4>Wady trybu standardowego</h4>
+    <ul>
+        <li>Ogromne spadki wydajności przy częstych zmianach funkcji renderujących wynikające ze zmiany aktualnie używanego shadera</li>
+    </ul>
+    
+    <h4>Użyteczność</h4>
+    <ul>
+        <li>Wszystkie aspekty grafiki 2D gdzie zestaw spritów nie wymaga częstego przełączania funkcji renderujących</li>
+    </ul>
+
+    <h3>Tryb Unifikowany</h3>
+    <p>Używa jednego wielkiego shadera do renderowania każdej istniejącej funkcji</p>
+    
+    <h4>Zalety trybu unifikowanego</h4>
+    <ul>
+        <li>Zerowe opóźnienie przy zmianie funkcji renderującej</li>
+        <li>Stabilne i przewidywalne czasy renderowania</li>
+    </ul>
+    
+    <h4>Wady trybu unifikowanego</h4>
+    <ul>
+        <li>Narzut ilości renderowanych wierzchołków dla wielu funkcji przewyższający faktyczną ich potrzebę</li>
+    </ul>
+    
+    <h4>Użyteczność</h4>
+    <ul>
+        <li>W stabilnym programie gdzie stabilność jest ważniejsza od agresywnych optymalizacji</li>
+    </ul>
+
+    <h3>Funkcje Renderujące</h3>
+    <p>Wszystkie Funkcje wspierają kanał alpha. Każda z tych funkcji ma uniwersalny odpowiednik:</p>
+    <ul>
+        <li>Renderowanie kolorowego prostokątu</li>
+        <li>Renderowanie kolorowego rotowanego prostokątu</li>
+        <li>Rysowanie linii od dowolnej grubości i kolorze od punktu a do punktu b</li>
+        <li>Renderowanie teksturowanego prostokątu</li>
+        <li>Renderowanie teksturowanego rotowanego prostokątu</li>
+        <li>Renderowanie części tekstury prostokątu</li>
+        <li>Renderowanie rotowanej teksturowanej części teksturytektury prostokątu</li>
+        <li>Renderowanie kolorowego koła</li>
+        <li>Renderowanie teksturowanego koła</li>
+        <li>Renderowanie kolorowego prostokątu z zaokrąglonymi rogami</li>
+        <li>Renderowanie teksturowanego prostokątu z zaokrąglonymi rogami</li>
+        <li>Renderowanie tekstury lub jej części z nałożonym filtrem koloru</li>
+        <li>Renderowanie tekstury lub jej części z drugą teksturą jako maską</li>
+        <li>Renderowanie obwódki/granicy wokół prostokątu zaokrąglonej lub ostrej</li>
+    </ul>
+
+    <h3>Dodatkowe funkcje</h3>
+    <ul>
+        <li>Clipping (Rysowanie tylko na części ekranu)</li>
+        <li>Zmienianie aktualnego rozmiaru rysowania (Dostosowywanie się do zmieniającego się rozmiaru okna)</li>
+    </ul>
+
+    <h2>Interfejs Użytkownika</h2>
+    <p>Moduł zarządzający hierarchią elementów graficznych (UI), na który składa się pięć głównych typów kontrolek:</p>
+    <ul>
+        <li><strong>Button:</strong> Klasa bazowa i element pasywny (wyświetlający tło i tekst)</li>
+        <li><strong>Click Box:</strong> Element interaktywny rejestrujący zdarzenia wejścia (kliknięcia)</li>
+        <li><strong>Text Box:</strong> Pole edycyjne przyjmujące wejście tekstowe od użytkownika.</li>
+        <li><strong>Pop Up Box:</strong> Element tymczasowy z odgórnie ograniczonym czasem życia</li>
+        <li><strong>Slider:</strong> Suwak pozwalający na manipulację wartością w wyznaczonych granicach osi X lub Y.</li>
+    </ul>
+
+    <p>Każdy z przycisków dziedziczy bazowe cechy od zwykłego przyciku wszystkie są modyfikowalne w dowolnym momencie działania programu są to kolejno:</p>
+    <ul>
+        <li><strong>Identyfikator:</strong> Unikalna nazwa instancji zapobiegająca duplikatom.</li>
+        <li><strong>Geometria i Stan:</strong> Wymiary, widoczność (flaga ukrycia) oraz typ krawędzi (ostre/zaokrąglone).</li>
+        <li><strong>Kolor tła lub tekstura</strong>, a także obecność, grubość i kolor obramowania.</li>
+        <li><strong>Typografia:</strong> Wyświetlany tekst, rodzaj czcionki, wyrównanie (środek/lewo/prawo), interlinia oraz korekta przesunięcia tekstu (offset X/Y)</li>
+        <li><strong>Interakcja:</strong> Filtr koloru oraz efekt dźwiękowy aktywowany przy kolizji kursora z elementem (Hover/Click).</li>
+    </ul>
+
+    <p>Dodatkowo każdy przycisk dziedziczący posiada kilka swoim unikalnych modyfikowalnych cech.</p>
+    <p>Sam interfejs użytkownika pozwala również na kilka ustawień globalnych jak:</p>
+    <ul>
+        <li><strong>System warstw (Z-Order)</strong></li>
+        <li><strong>Konsumpcja zdarzeń (Input Blocking):</strong> Blokowanie propagacji kliknięcia do elementów znajdujących się pod najwyżej renderowaną kontrolką.</li>
+        <li><strong>Wyzwalanie akcji (Trigger Mode):</strong> Możliwość zmiany rejestrowania kliknięcia z wciśnięcia (OnPress) na zwolnienie przycisku myszy (OnRelease).</li>
+    </ul>
+
+    <p>Aby zoptymalizować zarządzanie układem kontrolek, zaimplementowano trzy struktury pomocnicze:</p>
+    <ul>
+        <li>Lista szablonowa elementów pozwalająca na zdefiniowanie elementu nadrzędnego i rozwijanie listy elementów podrzędnych.</li>
+        <li>Sekcja Interfejsu: Kontener grupujący małe zbiory elementów ułatwiający zarządzanie ich widocznością.</li>
+        <li>Sekcja Tagowana: System zarządzania rozbudowanymi grupami elementów za pomocą tagów.</li>
+    </ul>
+
+    <h2>Menedżer Zasobów Graficznych</h2>
+    <p>Klasa przechowująca i zarządzająca wszystkimi wczytanymi teksturami jak i ich usuwaniem i wczytywaniem przechowuje wszystkie tekstury w tablicy hashującej (C++ unordered_map).</p>
+    <p>Pojedynczy obiekt tekstury zawiera:</p>
+    <ul>
+        <li>Wymiary w pikselach oryginalnego obrazu z którego została stworzona</li>
+        <li>Dodatkowy filtr przezroczytosci (kanał alpha)</li>
+        <li>Unikalne ukryte id tekstury niedostępne dla użytkownika wykorzystywane w renderowaniu</li>
+        <li>Unikalne id batchowania do płaskiego renderowania</li>
+        <li>Datę ostatniej modyfikacji na dysku</li>
+    </ul>
+    <p>Poza zarządzaniem tekstur ta klasa pozwala również na dynamiczne przeładowywanie tekstur z opcjonalnym usuwaniem już nieistniejących tekstur, wczytywaniem nowych oraz aktualizacją stanu aktualnych. Możliwe jest również podzielenie jednej tekstury na kilka pomniejszych.</p>
+
+    <h2>Menedżer Dźwięków</h2>
+    <p>Posiada dokładnie te same użyteczności co klasa zarządzajaca teksturami (Poza dzieleniem) z tym że wspiera on również granie dźwięków środowikowych i kanały stereo.</p>
+
+    <h2>Menedżer Scen</h2>
+    <p>Pozwala w uproszczeniu na przełączanie się pomiędzy odrębnymi częściami aplikacji lub gry każda scena dziedziczy interfejs po bazowej scenie i wymusza implementację własnych funkcji czyli:</p>
+    <ul>
+        <li><strong>Init:</strong> Alokacja i inicjalizacja zasobów startowych</li>
+        <li><strong>Logic Update:</strong> Aktualizacja mechaniki (AI, fizyka) w stałym kroku czasowym</li>
+        <li><strong>Frame Update:</strong> Przygotowanie danych do renderowania</li>
+        <li><strong>Input:</strong> Przetwarzanie i dystrybucja zdarzeń wejściowych</li>
+        <li><strong>Render:</strong> Przekazywanie danych do renderera</li>
+        <li><strong>Clear:</strong> Dealokacja i czyszczenie pamięci przed opuszczeniem sceny</li>
+    </ul>
+    <p>Przełączenie się pomiędzy scenami automatycznie resetuje porzuconą scenę.</p>
+    <p>Dodatkowo istnieje możliwość przechowywania zmiennych wystepujących pomiędzy scenami na zasadzie dynamicznego typu danych oznacza to że można przenosić pomiędzy zmianą sceny każdy możliwy typ danych.</p>
+
+    <h2>Eksplorator plików</h2>
+    <img src="Photos/fileExplorer.png" alt="Przykład Eksploratora Plików">
+    <p>Prosty graficzny eksplorator plików służący w zasadzie tylko i wyłącznie do pobrania ścieżki, która jest następnie zwracana jako string.</p>
+    <p><strong>Wspiera on dodatkowo:</strong></p>
+    <ul>
+        <li>Odfiltrowywanie niechcianych typów plików np .jpg, .exe</li>
+        <li>Ustawianie prędkości przewijania</li>
+        <li>Zdefiniowanie własnych tekstur dla danego typu plików</li>
+        <li>Ustawienie własnej wielkości okna</li>
+    </ul>
+
+    <h2>Kreator ścieżek</h2>
+    <img src="Photos/pathMaker.png" alt="Przykład Kreatora Ścieżek">
+    <p>Graficzne narzędzie tworzące ścieżki do użycia np. w ruchach elementów w grze, gdzie ścieżki nie da się obliczyć matematycznie.</p>
+    <p><strong>Wspiera on dodatkowo:</strong></p>
+    <ul>
+        <li>Kompresję punktu startowego i końcowego, gdy pojawia się w nich ciąg pustych punktów</li>
+        <li>Ustawienie, w ilu klatkach ma rysować się ścieżka</li>
+        <li>Kompresję punktów niezmieniających położenia ścieżki</li>
+        <li>Zapis i odczyt w formatach txt, csv, bin</li>
+        <li>Ustawienie własnej wielkości okna</li>
+    </ul>
+
+</div>
+
+</body>
+</html>

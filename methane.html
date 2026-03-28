@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Methane 2.0</title>
+    <link rel="stylesheet" href="methane.css">
+</head>
+<body>
+    <div class="title">
+    <h1>Methane 2.0</h1>
+    <h3>Methane to prosty język skryptowy stworzony w C# którego zadaniem jest zutomatyzować linkowanie bibliotek oraz tworzenie
+        arhchitektury projektów w Visual Studio.
+    </h3>
+
+    <img class="PhotoOne" src="Photos/methane1.png" style="width: 60vw; height: 250px;">
+
+    </div>
+
+
+    <div class="leftBox"></div>
+    <div class="rightBox"></div>
+
+
+    <div class="aboutText">
+        <h3>AddIncludeDir</h3>
+        <p>Args Count: Exactly 1<br>
+        <b>Use Example:</b> AddIncludeDir(&lt;Include Dir Full Path&gt;)</p>
+
+        <h3>AddLibraryDir</h3>
+        <p>Args Count: Exactly 1<br>
+        <b>Use Example:</b> AddLibraryDir(&lt;Library Dir Full Path&gt;)</p>
+
+        <h3>AddDependencies</h3>
+        <p>Args Count: Unlimited<br>
+        <b>Use Example:</b> AddDependencies(&lt;Arg1, Arg2, Arg3, ...&gt;)<br>
+        Note: No path needed, but must be used with AddLibraryDir.</p>
+
+        <h3>CloseIncludeDir</h3>
+        <p>Args Count: Exactly 0<br>
+        <b>Use Example:</b> CloseIncludeDir()<br>
+        Note: Needs to be used after all calls for AddIncludeDir.</p>
+
+        <h3>CloseLibraryDir</h3>
+        <p>Args Count: Exactly 0<br>
+        <b>Use Example:</b> CloseLibraryDir()<br>
+        Note: Needs to be used after all calls for AddLibraryDir.</p>
+
+        <h3>CloseDependencies</h3>
+        <p>Args Count: Exactly 0<br>
+        <b>Use Example:</b> CloseDependencies()<br>
+        Note: Needs to be used after all calls for CloseDependencies.</p>
+
+        <h3>CopySingleFile</h3>
+        <p>Args Count: 1 or 2<br>
+        <b>Use Example:</b> CopySingleFile(&lt;File Path&gt;, (Optional)&lt;DestinationPath&gt;)<br>
+        Note: If no destination path is used, it will be set as vsprojPath.</p>
+
+        <h3>CopyMultipleFiles</h3>
+        <p>Args Count: 1 or 2<br>
+        <b>Use Example:</b> CopyMultipleFiles(&lt;Folder Path&gt;, (Optional)&lt;DestinationPath&gt;)<br>
+        Note: If no destination path is used, it will be set as vsprojPath.</p>
+
+        <h3>CopyFolder</h3>
+        <p>Args Count: 1 or 2<br>
+        <b>Use Example:</b> CopyFolder(&lt;Folder Path&gt;, (Optional)&lt;DestinationPath&gt;)<br>
+        Note: If no destination path is used, it will be set as vsprojPath.</p>
+
+        <h3>CreateFolder</h3>
+        <p>Args Count: Exactly 2<br>
+        <b>Use Example:</b> CreateFolder(&lt;Folder Name&gt;, &lt;DestinationPath&gt;)</p>
+
+        <h3>SetCppStandard</h3>
+        <p>Args Count: Exactly 1<br>
+        <b>Use Example:</b> SetCppStandard(&lt;Standard Number&gt;)<br>
+        Note: Supports cpp 98, 3, 11, 14, 17, 20, 23. If another value is provided, the function won’t do anything.</p>
+
+        <h3>JoinVariables</h3>
+        <p>Args Count: Exactly 3<br>
+        <b>Use Example:</b> JoinVariables(&lt;New Variable Name&gt;, &lt;Variable 1&gt;, &lt;Variable 2&gt;)<br>
+        Note: It does not need to be an actual variable – it can be any text. The new variable will be accessible through {Variable Name}.</p>
+
+        <h3>Creating New Variable</h3>
+        <p><b>Example:</b><br>
+        $ - Identifier that variable will be created</p>
+        {data} new variable name</p>
+        = assigment to text there is also no problem to assign entire functions to this</p>
+
+    </div>
+    
+</body>
+</html>

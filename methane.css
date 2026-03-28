@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color:#2c2c2c;
+}
+
+.PhotoOne {
+  width: 600px;    
+  height: 250px;   
+  object-fit: cover; 
+}
+
+.title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.aboutText {
+    max-width: 800px;       /* ogranicza szerokość do czytelnej */
+    margin-left: 15%;
+    margin-right: 15%;     /* wyśrodkowanie kontenera */
+    padding: 30px;          /* odstęp wewnętrzny */
+    color: aliceblue;
+    border-radius: 8px;     /* lekko zaokrąglone rogi */
+    line-height: 1.6;       /* lepsza czytelność tekstu */
+}
+
+.aboutText h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: aliceblue;       /* kontrast do tła */
+}
+
+.aboutText p {
+    margin: 0 0 15px 0;
+}
+
+.aboutText ul {
+    margin: 10px 0 20px 20px;
+}
+
+.leftBox{
+    position: fixed;
+    top: 0px;
+    width: 10vw;
+    height: 100vh;
+    background-color: blueviolet;
+    z-index: -1;
+}
+
+.rightBox{
+    position: fixed;
+    left: 90vw;
+    top: 0px;
+    width: 10vw;
+    height: 100vh;
+    background-color: blueviolet;
+    z-index: -1;
+}
